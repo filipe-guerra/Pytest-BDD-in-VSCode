@@ -4,17 +4,21 @@ import time
 
 class GoogleHomePage():
 
-    def __init__(self, driver):
-        self.driver = driver
+    def __init__(self, app):
+        self.driver = app.driver
 
     def getHomePageItens(self):
         self.SEARCH_INPUT = self.driver.find_element(By.CSS_SELECTOR, 
         "#tsf > div:nth-child(2) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input")   
    
-    def iamOnGoogleSearchPage(self):
+    def goToGoogleSearchPage(self):
         self.driver.get("https://www.google.com.br/")
         time.sleep(3)
         self.getHomePageItens()
+        SEARCH_BUTTON = self.driver.find_element(By.CSS_SELECTOR, 'input[value="Pesquisa Google"]')
+        value = SEARCH_BUTTON.get_attribute('value')
+
+        return "Pesquisa Google" in value
 
     def putTextOnSearchInput(self, text):
         self.SEARCH_INPUT.send_keys(text)
@@ -23,6 +27,5 @@ class GoogleHomePage():
         self.SEARCH_INPUT.send_keys(Keys.RETURN)
         
     def seeResults(self, txtResult):
-        assert (txtResult in self.driver.page_source) 
-        time.sleep(2)
-        self.driver.quit()
+        return txtResult in self.driver.page_source 
+        

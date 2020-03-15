@@ -10,4 +10,4 @@ Feature: Simply Google search
         Examples:
         | text | txtResult |
         | Nasa | https://www.nasa.gov |
-        | ubuntu | Ubuntu: The leading operating system for PCs |
+        | ubuntu | Ubuntu: The leading operating system for PCs |pip
