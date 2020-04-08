@@ -1,26 +1,13 @@
 # coding=utf-8
-from selenium import webdriver
-from tests.pages.googlePage import GoogleHomePage
-import pytest
-
+import pytest, time
+from tests.framework.fixture import googleHomePage
+from tests.framework.fixture import app
 from pytest_bdd import (
     given,
     scenario,
     then,
     when,
 )
-
-@pytest.fixture
-def driver():
-    driver = None
-    if driver == None:
-        driver = webdriver.Chrome()
-    return driver
-
-@pytest.fixture
-def googleHomePage(driver):
-    googleHomePage = GoogleHomePage(driver)
-    yield googleHomePage
 
 @scenario('features/buscaGoogle.feature', 'Make a search')
 def test_make_a_search():
@@ -29,7 +16,7 @@ def test_make_a_search():
 
 @given('Iam on Google search page')
 def iam_on_google_search_page(googleHomePage):
-    googleHomePage.iamOnGoogleSearchPage()
+    assert googleHomePage.goToGoogleSearchPage()
 
 
 @when('I press enter to search')
@@ -43,5 +30,7 @@ def i_put_text_on_the_search_input(googleHomePage, text):
 
 
 @then('I see if results contains <txtResult>')
-def i_see_if_results_contains(googleHomePage, txtResult):
-    googleHomePage.seeResults(txtResult)
+def i_see_if_results_contains(googleHomePage, txtResult, app):
+    assert googleHomePage.seeResults(txtResult)
+    app.take_screenshot('results')
+    app.driver.quit()
